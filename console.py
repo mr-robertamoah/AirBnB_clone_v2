@@ -119,7 +119,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        print(args)
         split = args.split(' ')
         args = split[0]
         del split[0]
