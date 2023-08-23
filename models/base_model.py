@@ -30,9 +30,9 @@ class BaseModel:
                 setattr(self, 'created_at', datetime.now())
             for key in kwargs:
                 if key == 'created_at' or key == 'updated_at':
-                    setattr(self, key, datetime.fromisoformat(kwargs[k]))
+                    setattr(self, key, datetime.fromisoformat(kwargs[key]))
                 elif key != '__class__':
-                    setattr(self, k, kwargs[k])
+                    setattr(self, key, kwargs[key])
 
     def __str__(self):
         """Returns a string representation of the instance"""

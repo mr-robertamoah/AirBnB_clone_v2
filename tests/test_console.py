@@ -66,7 +66,8 @@ class TestHBNBCommand(unittest.TestCase):
                 command.onecmd('create User')
             # creating a User instance
             clear_stream(c_out)
-            command.onecmd('create User email="robert@gmail.com" password="123456"')
+            command.onecmd(
+                'create User email="robert@gmail.com" password="123456"')
             _id = c_out.getvalue().strip()
             db_con = MySQLdb.connect(
                 host=getenv('HBNB_MYSQL_HOST'),
