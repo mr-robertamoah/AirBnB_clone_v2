@@ -32,7 +32,7 @@ class DBStorage:
                                            getenv('HBNB_MYSQL_PWD'),
                                            getenv('HBNB_MYSQL_HOST'),
                                            getenv('HBNB_MYSQL_DB')
-                                       ), pool_pre_ping=True)
+                                       ))
 
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -49,10 +49,10 @@ class DBStorage:
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
                     a_dict[key] = obj
-        elif cls not in classes.values():
+        elif cls not in classes.keys():
             return a_dict
         else:
-            objs = self.__session.query(cls).all()
+            objs = self.__session.query(classes[cls]).all()
             for obj in objs:
                 key = obj.__class__.__name__ + '.' + obj.id
                 a_dict[key] = obj
@@ -61,13 +61,7 @@ class DBStorage:
     def new(self, obj):
         '''add the object to the current database session'''
         if obj is not None:
-            try:
-                self.__session.add(obj)
-                self.__session.flush()
-                self.__session.refresh(obj)
-            except Exception as e:
-                self.__session.rollback()
-                raise e
+            self.__session.add(obj)
 
     def save(self):
         '''commit all changes of the current database session'''
@@ -76,8 +70,7 @@ class DBStorage:
     def delete(self, obj=None):
         '''delete from the current database session obj if not None'''
         if obj is not None:
-            self.__session.query(type(obj)).filter(
-                type(obj).id == obj.id).delete()
+            self.__session.delete(obj)
 
     def reload(self):
         '''reloads the database'''
